@@ -20,5 +20,5 @@ app.use('/class', Class_router);
 app.use('/student', Student_router);
 
 app.listen(port, function() {
-    console.log('App listen on ' + port);
+    console.log('App listen on port ' + port);
 });
