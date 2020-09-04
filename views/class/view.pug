@@ -1,0 +1,32 @@
+extends ../layout
+
+block content
+    .container.contents-container
+        h1 Class View
+        a.use-link(href="/class") Class
+        table.table
+            thead  
+                th(scope="col") Name
+                th(scope="col") SĐT
+                th(scope="col") Tổng số học sinh
+                th(scope="col") Action
+            tbody
+                    tr
+                        td= class_item.name
+                        td= class_item.phone_number
+                        td= student_number
+                        td(id="btn-row")
+                            button(class="view-btn btn btn-danger") Edit
+                            a(href="/class/delete/" + class_item._id, 
+                            class="view-btn btn btn-danger",) Delete
+        h2 Danh sách học sinh
+        table.table
+            thead  
+                th(scope="col") Name
+                th(scope="col") Action
+            tbody
+                each student in student_list
+                    tr
+                        td= student.name
+                        td
+                            a(href="/student/" + student._id, class="view-btn btn btn-info") More

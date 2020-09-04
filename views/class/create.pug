@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+    .container.contents-container
+        h1 Create Class
+        a.use-link(href="/class") Class
+        form.create-box(action="/class/create", method="POST")
+            input.form-control(name="class_name", type="text", placeholder="Name")
+            input.form-control(name="phone_number", type="text", placeholder="SĐT")
+            button.btn.btn-primary Create

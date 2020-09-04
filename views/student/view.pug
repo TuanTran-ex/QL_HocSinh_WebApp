@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+    .container.contents-container
+        h1 Student View
+        a.use-link(href="/student") Student
+        table.table
+            thead  
+                th(scope="col") Name
+                th(scope="col") Ngày sinh
+                th(scope="col") SĐT
+                th(scope="col") Nơi ở
+                th(scope="col") Class name
+                th(scope="col") Action
+            tbody
+                    tr 
+                        td= student_item.name
+                        td= student_item.birthdate
+                        td= student_item.phone_number
+                        td= student_item.address 
+                        td= class_name
+                        td
+                            button(class="view-btn btn btn-danger") Edit
+                            a(href="/student/delete/" + student_item._id, 
+                            class="view-btn btn btn-danger",) Delete

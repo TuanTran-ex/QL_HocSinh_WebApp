@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+    .container.contents-container
+        h1 Create Student
+        a.use-link(href="/student") Student
+        form.create-box(action="/student/create", method="POST")
+            select.form-control(name="class_id")
+                each item in class_list 
+                    option(value= item._id)= item.name
+            input.form-control(name="student_name", type="text", placeholder="Name")
+            input.form-control(name="phone_number", type="text", placeholder="SĐT")
+            input.form-control(name="birthdate", type="text", placeholder="Ngày sinh")
+            input.form-control(name="address", type="text", placeholder="Nơi ở")
+            button.btn.btn-primary Create
