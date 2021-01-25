@@ -76,7 +76,6 @@ module.exports.changePass = async (req, res) => {
     if (!User) {
       res.status(404).json({
         code: 404,
-        reason: "Not found",
         message: "User not found",
       });
     } else {
@@ -91,7 +90,6 @@ module.exports.changePass = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       code: 400,
-      reason: "Bad request",
       message: "Can not Update",
       error: err,
     });

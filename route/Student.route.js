@@ -9,7 +9,10 @@ async function author(req, res, next) {
   try {
     const user = await Users.findById(id);
     if (!user.isAdmin) {
-      return res.send("Ban ko duoc truy cap");
+      return res.status(403).json({
+        code: 403,
+        message: 'Not have permission to view this directory or page'
+      });
     } else next();  
   } catch (err) {
     res.status(400).send(err);

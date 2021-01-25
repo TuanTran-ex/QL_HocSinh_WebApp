@@ -4,7 +4,7 @@ require('dotenv/config');
 
 const classRouter = require('./route/Class.route');
 const studentRouter = require('./route/Student.route');
-const loginRouter = require('./route/login');
+const loginRouter = require('./route/Login.route');
 const adminRouter = require('./route/Admin.route');
 const userRouter = require('./route/User.route');
 

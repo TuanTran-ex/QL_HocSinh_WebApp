@@ -8,6 +8,7 @@ module.exports.index = (req, res) => {
     res.render("student/index", { student_list: student_item });
   });
 };
+
 module.exports.search = async (req, res) => {
   var q = req.query.q;
   try {
@@ -23,6 +24,7 @@ module.exports.search = async (req, res) => {
     });
   }
 };
+
 module.exports.view = async (req, res) => {
   const id = req.params.id;
   try {
@@ -52,6 +54,7 @@ module.exports.create = (req, res) => {
     res.render("student/create", { class_list: class_item });
   });
 };
+
 module.exports.postCreate = async (req, res) => {
   const newDocument = new Student({
     name: req.body.student_name,
@@ -71,6 +74,7 @@ module.exports.postCreate = async (req, res) => {
     });
   }
 };
+
 module.exports.delete = async (req, res) => {
   const id = req.params.id;
   try {
@@ -99,8 +103,6 @@ module.exports.delete = async (req, res) => {
 
 module.exports.updateStudent = async (req, res) => {
   const id = req.params.id;
-  const { name, phone_number, birthdate, address, class_id } = req.body;
-  console.log(req.body);
 
   try {
     const updateUser = await Student.findByIdAndUpdate(id, req.body);

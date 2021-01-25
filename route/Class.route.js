@@ -9,7 +9,10 @@ router.use(async (req, res, next) => {
   const id = req.jwtDecoded._id;
   const user = await Users.findById(id);
   if (!user.isAdmin) {
-    return res.send("Ban ko duoc truy cap");
+    return res.status(403).json({
+      code: 403,
+      message: 'Not have permission to view this directory or page'
+    });
   }
   else next();
 });

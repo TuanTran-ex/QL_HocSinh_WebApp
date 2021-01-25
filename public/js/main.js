@@ -1,5 +1,6 @@
 $(document).ready(function () {
-  $("#updateBtn").click(function (e) {
+  // Student event
+  $("#updateBtn").click(function (e) { // Update info student
     e.preventDefault();
     const inputArr = $(".stutdent-update-input");
     const data = {
@@ -26,7 +27,7 @@ $(document).ready(function () {
     $(".update-student-form").toggle();
   });
 
-  $("#delStudent-btn").click(function (e) {
+  $("#delStudent-btn").click(function (e) { // Delete Student
     e.preventDefault();
     const part = location.pathname.split("/");
     const id = part[2];
@@ -41,21 +42,7 @@ $(document).ready(function () {
   });
 
   // Class event
-  $("#delClass-btn").click(function (e) {
-    e.preventDefault();
-    const part = location.pathname.split("/");
-    const id = part[2];
-    $.ajax({
-      type: "DELETE",
-      url: "/class/" + id,
-      dataType: "html",
-      success: function (response) {
-        location.replace("/class");
-      },
-    });
-  });
-
-  $("#classUpdateBtn").click(function (e) {
+  $("#classUpdateBtn").click(function (e) { // Update class
     e.preventDefault();
     const inputArr = $(".class-update-input");
     const data = {
@@ -79,8 +66,22 @@ $(document).ready(function () {
     $(".update-class-form").toggle();
   });
 
+  $("#delClass-btn").click(function (e) { // Delete class
+    e.preventDefault();
+    const part = location.pathname.split("/");
+    const id = part[2];
+    $.ajax({
+      type: "DELETE",
+      url: "/class/" + id,
+      dataType: "html",
+      success: function (response) {
+        location.replace("/class");
+      },
+    });
+  });
+
   // User event
-  $("#updateUserBtn").click((e) => {
+  $("#updateUserBtn").click((e) => { // Update user
     e.preventDefault();
     const inputArr = $(".stutdent-update-input");
     const data = {
@@ -102,7 +103,7 @@ $(document).ready(function () {
     });
   });
 
-  $("#change-pass").click((e) => {
+  $("#change-pass").click((e) => { // Change Password
     e.preventDefault();
     const inputArr = $(".change-pass-input");
     const data = {

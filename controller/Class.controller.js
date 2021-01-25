@@ -1,6 +1,5 @@
 const Student = require("../model/student.model");
 const Class = require("../model/class.model");
-const Users = require("../model/users.model");
 
 module.exports.index = function (req, res) {
   Class.find().then(function (item) {

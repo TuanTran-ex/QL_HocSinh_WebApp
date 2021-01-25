@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
 mongoose.connect("mongodb://localhost/Project_01", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -23,12 +22,6 @@ const usersSchema = new mongoose.Schema({
     type: String,
   },
 });
-
-usersSchema.method.generateAuthToken = async function () {
-  const user = this;
-  const token = jwt.sign({ id: user._id }, process.env.JWT_KEY);
-  return token;
-};
 
 const Users = mongoose.model("Users", usersSchema, "Users");
 

@@ -111,7 +111,7 @@ module.exports.register = async (req, res) => {
 module.exports.adminRegister = async (req, res) => {
   const { error } = registerValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-  const { username, password, studentID } = req.body;
+  const { username, password } = req.body;
 
   const user = await Users.findOne({ username: username });
   if (user) {
