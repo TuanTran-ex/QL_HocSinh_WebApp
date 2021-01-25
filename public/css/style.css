@@ -50,6 +50,27 @@ nav ul li a{
 nav ul li a:hover {
     color: #f1f1f8;
 }
+
+/* --------- Student ---------- */
+.update-student-form {
+    width: 50%;
+    margin: 0 auto;
+    display: none;
+}
+.update-student-form input {
+    margin-bottom: 16px;
+}
+
+/* --------- Class ---------- */
+.update-class-form {
+    width: 50%;
+    margin: 0 auto;
+    display: none;
+}
+.update-class-form input {
+    margin-bottom: 16px;
+}
+
 /* ------ Footer ------------ */
 footer {
     padding: 1.5rem 0;

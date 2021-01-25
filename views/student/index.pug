@@ -3,8 +3,8 @@ extends ../layout
 block content
     .container.contents-container
         h1 Quản lý danh sách Student
-        a.use-link(href="/student/create") Create
-        form.search-box(action= "/student/search", method="GET")
+        a.use-link(href="/students/create") Create
+        form.search-box(action= "/students/search", method="GET")
             input.form-control(name="q", type="text", value= search_key)
             button.btn.btn-primary Search
         h2.mt-5 Danh sách Student
@@ -19,6 +19,6 @@ block content
                         td= item.name
                         td= item.address
                         td(class="text-center")
-                            a(href="/student/" + item._id, class="view-btn btn btn-primary") View
+                            a(href="/students/" + item._id, class="view-btn btn btn-primary") View
 
     

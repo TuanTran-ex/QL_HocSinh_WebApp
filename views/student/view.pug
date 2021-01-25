@@ -1,25 +1,29 @@
 extends ../layout
 
 block content
-    .container.contents-container
-        h1 Student View
-        a.use-link(href="/student") Student
-        table.table
-            thead  
-                th(scope="col") Name
-                th(scope="col") Ngày sinh
-                th(scope="col") SĐT
-                th(scope="col") Nơi ở
-                th(scope="col") Class name
-                th(scope="col") Action
-            tbody
-                    tr 
-                        td= student_item.name
-                        td= student_item.birthdate
-                        td= student_item.phone_number
-                        td= student_item.address 
-                        td= class_name
-                        td
-                            button(class="view-btn btn btn-danger") Edit
-                            a(href="/student/delete/" + student_item._id, 
-                            class="view-btn btn btn-danger",) Delete
+  .container.contents-container
+    h1 Student View
+    table.table
+      thead  
+        th(scope="col") Name
+        th(scope="col") Ngày sinh
+        th(scope="col") SĐT
+        th(scope="col") Nơi ở
+        th(scope="col") Class name
+        th(scope="col") Action
+      tbody
+          tr 
+            td= student_item.name
+            td= student_item.birthdate
+            td= student_item.phone_number
+            td= student_item.address 
+            td= class_name
+            td
+              button(class="view-btn btn btn-danger", id="editStudent-btn") Edit
+              button(class="view-btn btn btn-danger", id="delStudent-btn") Delete
+    form(action="/students" + student_item.id, class="update-student-form")
+      input.form-control(class="stutdent-update-input", name="username", type="text", placeholder="Name")
+      input.form-control(class="stutdent-update-input", name="date", type="text", placeholder="Ngày sinh")
+      input.form-control(class="stutdent-update-input", name="sdt", type="text", placeholder="SĐT")
+      input.form-control(class="stutdent-update-input", name="address", type="text", placeholder="Nơi ở")
+      button.btn.btn-primary(id="updateBtn") Submit

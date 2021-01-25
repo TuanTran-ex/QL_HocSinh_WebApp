@@ -3,8 +3,8 @@ extends ../layout
 block content
     .container.contents-container
         h1 Create Student
-        a.use-link(href="/student") Student
-        form.create-box(action="/student/create", method="POST")
+        a.use-link(href="/students") Student
+        form.create-box(action="/students/create", method="POST")
             select.form-control(name="class_id")
                 each item in class_list 
                     option(value= item._id)= item.name
@@ -12,4 +12,5 @@ block content
             input.form-control(name="phone_number", type="text", placeholder="SĐT")
             input.form-control(name="birthdate", type="text", placeholder="Ngày sinh")
             input.form-control(name="address", type="text", placeholder="Nơi ở")
-            button.btn.btn-primary Create
+            button.btn.btn-primary(id="create-btn") Create
+        button.btn.btn-primary(id="create-btn-tmp") Create tmp

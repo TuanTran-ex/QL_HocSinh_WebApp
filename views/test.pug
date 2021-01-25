@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    .container.contents-container
+        h1 Login
+        form.create-box(action="/test", method="POST")
+            input.form-control(name="username", type="text", placeholder="Username")
+            input.form-control(name="password", type="text", placeholder="Password")
+            button.btn.btn-primary Login

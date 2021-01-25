@@ -1,0 +1,111 @@
+POST http://localhost:3000/auth
+Content-Type: application/json
+
+{
+  "username": "TuanTran",
+  "password": "2313122",
+  "studentID": "5fdc578424109624d024dcb1"
+}
+
+###
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "TuanTran",
+  "password": "2313122"
+}
+
+###
+POST http://localhost:3000/auth/admin
+Content-Type: application/json
+
+{
+  "username": "TuanTranad",
+  "password": "2313122"
+}
+
+###
+POST http://localhost:3000/students/forgotpass
+Content-Type: application/json
+
+{
+  "username": "TuanTran",
+  "newpass": "21111111"
+}
+###
+
+POST http://localhost:3000/students/create
+Content-Type: application/json
+Cookie: auth-admin-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRjNjM2ODhkMzJiNzI3NDAyM2M4MzAiLCJpYXQiOjE2MDgyODQxMjd9.A2DR0n-6ljXowVuM2KtAN9hzkZNVnIwiJmMMAixHdzM
+{
+  "name": "ABC",
+  "phone_number": "2313123123",
+  "birthdate": "21/3",
+  "address": "22323 HHT",
+  "class_id": "5fdc576e24109624d024dcb0"
+}
+###
+
+PUT http://localhost:3000/students/5fdae163d0e1181c64210143
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
+
+{
+  "name": "TTT123",
+  "birthdate": "2/2",
+  "phone_number": "1232131",
+  "address": "123 ABC"
+}
+###
+
+PUT http://localhost:3000/students/5fdae163d0e1181c64210
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
+
+{
+  "name": "TTT123",
+  "birthdate": "2/2",
+  "phone_number": "1232131",
+  "address": "123 ABC"
+}
+###
+
+PUT http://localhost:3000/test/6007dfb4d3e7e1
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
+
+{
+  "name": "TTT123",
+  "birthdate": "2/2",
+  "phone_number": "1232131",
+  "address": "123 ABC"
+}
+###
+
+POST http://localhost:3000/test/users
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
+
+{
+  "username": "TuanTranad",
+  "password": "Tsadsadwq3231"
+}
+
+###
+DELETE  http://localhost:3000/students/s
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
+
+###
+POST http://localhost:3000/students/create
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
+
+{
+  "student_name": "ABC",
+  "phone_number": "2313123123",
+  "birthdate": "21/3",
+  "address": "22323 HHT",
+  "class_id": "5fdc576e24109624d024dcb0"
+}

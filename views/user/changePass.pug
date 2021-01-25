@@ -9,19 +9,18 @@ html(lang="en")
       nav.navbar.navbar-expand-lg
         .container
           .navbar-brand
-            span QLHS
+            span User
           ul.navbar-nav.mr-auto
-            li.nav-item
-              a.nav-link(href='/admin') Dashboard
-            li.nav-item
-              a.nav-link(href='/students') Student
-            li.nav-item
-              a.nav-link(href='/class') Class
             li.nav-item
               a.nav-link(href='/auth/logout') Logout
 
-    block content
-
+    .container.contents-container
+        h1 Change PassWord
+        form.create-box
+            input.form-control(class="change-pass-input", name="username", type="text", placeholder="Username")
+            input.form-control(class="change-pass-input", name="newpass", type="text", placeholder="New Password")
+            button.btn.btn-primary(id='change-pass') Submit
+  
   footer
     .copyright
       span Copyright @JIN20
@@ -31,3 +30,4 @@ script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.m
 script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js", integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl", crossorigin="anonymous")
 script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
 script(src="/js/main.js")
+    

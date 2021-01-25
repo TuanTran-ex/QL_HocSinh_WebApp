@@ -1,32 +1,35 @@
 extends ../layout
 
 block content
-    .container.contents-container
-        h1 Class View
-        a.use-link(href="/class") Class
-        table.table
-            thead  
-                th(scope="col") Name
-                th(scope="col") SĐT
-                th(scope="col") Tổng số học sinh
-                th(scope="col") Action
-            tbody
-                    tr
-                        td= class_item.name
-                        td= class_item.phone_number
-                        td= student_number
-                        td(id="btn-row")
-                            button(class="view-btn btn btn-danger") Edit
-                            a(href="/class/delete/" + class_item._id, 
-                            class="view-btn btn btn-danger",) Delete
-        h2 Danh sách học sinh
-        table.table
-            thead  
-                th(scope="col") Name
-                th(scope="col") Action
-            tbody
-                each student in student_list
-                    tr
-                        td= student.name
-                        td
-                            a(href="/student/" + student._id, class="view-btn btn btn-info") More
+  .container.contents-container
+    h1 Class View
+    a.use-link(href="/class") Class
+    table.table
+      thead  
+        th(scope="col") Name
+        th(scope="col") SĐT
+        th(scope="col") Tổng số học sinh
+        th(scope="col") Action
+      tbody
+          tr
+            td= class_item.name
+            td= class_item.phone_number
+            td= student_number
+            td(id="btn-row")
+              button(class="view-btn btn btn-danger", id='editClass-btn') Edit
+              button(class="view-btn btn btn-danger", id="delClass-btn") Delete
+    form(action="/class" + class_item.id, class="update-class-form")
+      input.form-control(class="class-update-input", name="username", type="text", placeholder="Name")
+      input.form-control(class="class-update-input", name="sdt", type="text", placeholder="SĐT")
+      button.btn.btn-primary(id="classUpdateBtn") Submit
+    h2 Danh sách học sinh
+    table.table
+      thead  
+        th(scope="col") Name
+        th(scope="col") Action
+      tbody
+        each student in student_list
+          tr
+            td= student.name
+            td
+              a(href="/students/" + student._id, class="view-btn btn btn-info") More

@@ -9,19 +9,38 @@ html(lang="en")
       nav.navbar.navbar-expand-lg
         .container
           .navbar-brand
-            span QLHS
+            span User
           ul.navbar-nav.mr-auto
             li.nav-item
-              a.nav-link(href='/admin') Dashboard
-            li.nav-item
-              a.nav-link(href='/students') Student
-            li.nav-item
-              a.nav-link(href='/class') Class
-            li.nav-item
+              a.nav-link(href='/users/changepass') Change Password
               a.nav-link(href='/auth/logout') Logout
 
-    block content
-
+    .container.contents-container
+        h1 Profile
+        table.table
+          thead  
+            th(scope="col") Name
+            th(scope="col") Ngày sinh
+            th(scope="col") SĐT
+            th(scope="col") Nơi ở
+            th(scope="col") Class name
+            th(scope="col") Action
+          tbody
+              tr 
+                td= student_item.name
+                td= student_item.birthdate
+                td= student_item.phone_number
+                td= student_item.address 
+                td= class_name
+                td
+                  button(class="view-btn btn btn-danger", id="editStudent-btn") Edit
+        form(class="update-student-form")
+          input.form-control(class="stutdent-update-input", name="username", type="text", placeholder="Name")
+          input.form-control(class="stutdent-update-input", name="date", type="text", placeholder="Ngày sinh")
+          input.form-control(class="stutdent-update-input", name="sdt", type="text", placeholder="SĐT")
+          input.form-control(class="stutdent-update-input", name="address", type="text", placeholder="Nơi ở")
+          button.btn.btn-primary(id="updateUserBtn") Submit
+  
   footer
     .copyright
       span Copyright @JIN20
