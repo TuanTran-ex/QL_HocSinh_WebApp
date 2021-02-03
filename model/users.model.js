@@ -1,8 +1,9 @@
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/Project_01", {
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb+srv://dbAdmin1:Data1234@qlhs.yhzsi.mongodb.net/QLHS', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false
+  useFindAndModify: false,
 });
 
 const usersSchema = new mongoose.Schema({
@@ -23,6 +24,6 @@ const usersSchema = new mongoose.Schema({
   },
 });
 
-const Users = mongoose.model("Users", usersSchema, "Users");
+const Users = mongoose.model('Users', usersSchema, 'Users');
 
 module.exports = Users;

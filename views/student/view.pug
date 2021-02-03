@@ -22,8 +22,9 @@ block content
               button(class="view-btn btn btn-danger", id="editStudent-btn") Edit
               button(class="view-btn btn btn-danger", id="delStudent-btn") Delete
     form(action="/students" + student_item.id, class="update-student-form")
-      input.form-control(class="stutdent-update-input", name="username", type="text", placeholder="Name")
-      input.form-control(class="stutdent-update-input", name="date", type="text", placeholder="Ngày sinh")
-      input.form-control(class="stutdent-update-input", name="sdt", type="text", placeholder="SĐT")
-      input.form-control(class="stutdent-update-input", name="address", type="text", placeholder="Nơi ở")
+      input.form-control(class="student-update-input", name="username", type="text", placeholder="Name")
+      input.form-control(class="student-update-input", name="date", type="text", placeholder="Ngày sinh")
+      input.form-control(class="student-update-input", name="sdt", type="text", placeholder="SĐT")
+      input.form-control(class="student-update-input", name="address", type="text", placeholder="Nơi ở")
+      p(id="alert", style="color: red; display: none")
       button.btn.btn-primary(id="updateBtn") Submit

@@ -1,172 +1,211 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-const Users = require("../model/users.model");
-const Student = require("../model/student.model");
+const Users = require('../model/users.model');
+const utils = require('../utils/utils');
 const {
   registerValidation,
   loginValidation,
-} = require("../middlewares/Validation");
+  forgotPassValidation,
+} = require('../middlewares/Validation');
 
 module.exports.index = (req, res) => {
-  res.render("validate/login.pug");
+  res.render('validate/login.pug');
 };
 
 module.exports.registerPage = (req, res) => {
-  res.render("validate/register.pug");
+  res.render('validate/register.pug');
 };
 
 // Login
 module.exports.login = async (req, res) => {
   // Validation data from client
   const { error } = loginValidation(req.body);
-  if (error)
-    return res.status(400).json({
+  if (error) {
+    res.status(400).json({
       code: 400,
-      message: error.details[0].message,
+      success: false,
+      message: 'Username or password wrong',
+      error: error.details[0].message,
     });
-
-  const { username, password } = req.body;
-  const user = await Users.findOne({ username: username });
-  if (!user)
-    res.status(404).json({
-      code: 404,
-      message: "Not found user",
-    });
-  else {
-    const truePass = await bcrypt.compare(password, user.password);
-    if (!truePass) {
-      res.status(400).json({
-        code: 400,
-        message: "Wrong password",
+  } else {
+    const { username, password } = req.body;
+    const user = await Users.findOne({ username: username });
+    if (!user)
+      res.status(404).json({
+        code: 404,
+        success: false,
+        message: 'Not found user',
       });
-    } else {
-      try {
-        const token = await jwt.sign({ _id: user._id }, process.env.JWT_KEY);
-        if (user.isAdmin) {
-          res
-            .cookie("auth-token", token, { maxAge: 240000 })
-            .redirect("/admin");
-        } else {
-          res
-            .cookie("auth-token", token, { maxAge: 240000 })
-            .redirect(`/users/${user._id}`);
-        }
-      } catch (err) {
-        res.status(500).json({
-          code: 500,
-          message: "Can not create token",
-          error: err,
+    else {
+      const truePass = await bcrypt.compare(password, user.password);
+      if (!truePass) {
+        res.status(400).json({
+          code: 400,
+          success: false,
+          message: 'Wrong password',
         });
+      } else {
+        try {
+          const token = await jwt.sign({ _id: user._id }, process.env.JWT_KEY);
+          if (user.isAdmin) {
+            res
+              .cookie('auth-token', token, { maxAge: 240000 })
+              .status(200)
+              .json({
+                code: 200,
+                success: true,
+                data: { user, token },
+                admin: true,
+              });
+          } else {
+            res
+              .cookie('auth-token', token, { maxAge: 240000 })
+              .status(200)
+              .json({
+                code: 200,
+                success: true,
+                data: { user, token },
+                admin: false,
+              });
+          }
+        } catch (err) {
+          res.status(500).json({
+            code: 500,
+            success: false,
+            message: 'Can not create token',
+            error: err,
+          });
+        }
       }
     }
   }
 };
 
 module.exports.logout = (req, res) => {
-  res.clearCookie("auth-token").redirect("/auth");
+  res.clearCookie('auth-token').redirect('/auth');
 };
 
 // Register
 module.exports.register = async (req, res) => {
   const { error } = registerValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-  const { username, password, studentID } = req.body;
-
-  const user = await Users.findOne({ username: username });
-  if (user) {
-    return res.status(400).json({
-      code: 400,
-      message: "Username already exist",
-    });
-  }
-  const student = await Student.findById(studentID);
-  if (!student) {
-    return res.status(404).json({
-      code: 404,
-      message: "Student not fault",
-    });
-  }
-  try {
-    // Create new user
-    const saltRounds = 10;
-    const hashPass = await bcrypt.hash(password, saltRounds);
-    const newUser = new Users({
-      username: username,
-      password: hashPass,
-      studentID: studentID,
-    });
-    await newUser.save();
-    res.redirect("/auth");
-  } catch (err) {
+  if (error) {
     res.status(400).json({
       code: 400,
-      message: "Can not create new account. Syntax error",
-      error: err,
+      success: false,
+      message: 'Data error',
+      error: error.details[0].message,
     });
+  } else {
+    const { username, password, studentID } = req.body;
+    const reg = await utils.register(username, password, studentID);
+    if (reg.code === 409) {
+      res.status(409).json({
+        code: 409,
+        success: false,
+        message: 'Username already exist',
+      });
+    } else if (reg.code === 404) {
+      res.status(404).json({
+        code: 404,
+        success: false,
+        message: 'Student not fault',
+      });
+    } else if (reg.code === 200) {
+      res.status(200).json({
+        code: 200,
+        success: true,
+        data: reg.data,
+      });
+    } else if (reg.code === 400) {
+      res.status(400).json({
+        code: 400,
+        success: false,
+        message: 'Can not create new account. Syntax error',
+        error: reg.data,
+      });
+    }
   }
 };
 
 // Register admin
 module.exports.adminRegister = async (req, res) => {
   const { error } = registerValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-  const { username, password } = req.body;
-
-  const user = await Users.findOne({ username: username });
-  if (user) {
-    return res.status(400).json({
-      code: 400,
-      message: "User already exist",
-    });
-  }
-  try {
-    // Create new user
-    const saltRounds = 10;
-    const hashPass = await bcrypt.hash(password, saltRounds);
-    const newUser = new Users({
-      username: username,
-      password: hashPass,
-      studentID: null,
-      isAdmin: true,
-    });
-    await newUser.save();
-    res.send("Register success");
-    res.redirect("/auth");
-  } catch (err) {
+  if (error) {
     res.status(400).json({
       code: 400,
-      message: "Can not create new account. Syntax error",
-      error: err,
+      success: false,
+      message: 'Data error',
+      error: error.details[0].message,
     });
+  } else {
+    const { username, password } = req.body;
+    const reg = await utils.register(username, password, null);
+    if (reg.code === 409) {
+      res.status(409).json({
+        code: 409,
+        success: false,
+        message: 'Username already exist',
+      });
+    } else if (reg.code === 200) {
+      res.status(200).json({
+        code: 200,
+        success: true,
+        data: reg.data,
+      });
+    } else if (reg.code === 400) {
+      res.status(400).json({
+        code: 400,
+        success: false,
+        message: 'Can not create new account. Syntax error',
+        error: reg.data,
+      });
+    }
   }
 };
 
 // Forgot Password
 module.exports.forgotPassPage = (req, res) => {
-  res.render("validate/forgotPass");
+  res.render('validate/forgotPass');
 };
 
 module.exports.forgotPass = async (req, res) => {
-  const { username, newpass } = req.body;
-  const user = await Users.findOne({ username: username });
-  if (!user) {
-    res.status(404).json({
-      code: 404,
-      message: "User not found!",
+  const { error } = forgotPassValidation(req.body);
+  if (error) {
+    res.status(400).json({
+      code: 400,
+      success: false,
+      message: 'Data error',
+      error: error.details[0].message,
     });
   } else {
-    try {
-      const saltRounds = 10;
-      const hashPass = await bcrypt.hash(newpass, saltRounds);
-      user.password = hashPass;
-      await user.save();
-      res.redirect("/auth");
-    } catch (err) {
-      res.status(400).json({
-        code: 400,
-        message: "Bad request. Password wrong or can not Update",
+    const { username, newpass } = req.body;
+    const user = await Users.findOne({ username: username });
+    if (!user) {
+      res.status(404).json({
+        code: 404,
+        success: false,
+        message: 'User not found!',
       });
+    } else {
+      try {
+        const saltRounds = 10;
+        const hashPass = await bcrypt.hash(newpass, saltRounds);
+        user.password = hashPass;
+        await user.save();
+        res.status(200).json({
+          code: 200,
+          success: true,
+          data: user,
+        });
+      } catch (err) {
+        res.status(400).json({
+          code: 400,
+          success: false,
+          message: 'Bad request. Password wrong or can not Update',
+          error: err,
+        });
+      }
     }
   }
 };

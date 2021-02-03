@@ -21,6 +21,7 @@ block content
     form(action="/class" + class_item.id, class="update-class-form")
       input.form-control(class="class-update-input", name="username", type="text", placeholder="Name")
       input.form-control(class="class-update-input", name="sdt", type="text", placeholder="SĐT")
+      p(id="alert", style="color: red; display: none")
       button.btn.btn-primary(id="classUpdateBtn") Submit
     h2 Danh sách học sinh
     table.table

@@ -1,8 +1,9 @@
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/Project_01", {
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb+srv://dbAdmin1:Data1234@qlhs.yhzsi.mongodb.net/QLHS', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false
+  useFindAndModify: false,
 });
 
 const classSchema = new mongoose.Schema({
@@ -10,6 +11,6 @@ const classSchema = new mongoose.Schema({
   phone_number: String,
 });
 
-const Class = mongoose.model("Class", classSchema, "Class");
+const Class = mongoose.model('Class', classSchema, 'Class');
 
 module.exports = Class;

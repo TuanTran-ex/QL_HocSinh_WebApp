@@ -3,8 +3,9 @@ extends ../layout_student
 block content
     .container.contents-container
         h1 Login
-        form.create-box(action="/auth/login", method="POST")
+        form.create-box(id="login-form")
             input.form-control(name="username", type="text", placeholder="Username")
             input.form-control(name="password", type="text", placeholder="Password")
             button.btn.btn-primary(id="loginBtn") Login
+        p(id="alert", style="color: red; display: none")
         a(href='/auth/forgotpass') Forgot Pass

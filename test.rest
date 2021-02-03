@@ -1,28 +1,31 @@
+// Register
 POST http://localhost:3000/auth
 Content-Type: application/json
 
 {
-  "username": "TuanTran",
-  "password": "2313122",
-  "studentID": "5fdc578424109624d024dcb1"
+  "username": "TAT11112",
+  "password": "12345678",
+  "studentID": "60167eceb72a5832ec7ffded"
 }
 
 ###
-POST http://localhost:3000/auth/login
-Content-Type: application/json
-
-{
-  "username": "TuanTran",
-  "password": "2313122"
-}
-
-###
+// Register admin
 POST http://localhost:3000/auth/admin
 Content-Type: application/json
 
 {
-  "username": "TuanTranad",
-  "password": "2313122"
+  "username": "admin123",
+  "password": "admin123"
+}
+
+###
+// Login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "TTT1234",
+  "password": "12345678"
 }
 
 ###
@@ -37,11 +40,12 @@ Content-Type: application/json
 
 POST http://localhost:3000/students/create
 Content-Type: application/json
-Cookie: auth-admin-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRjNjM2ODhkMzJiNzI3NDAyM2M4MzAiLCJpYXQiOjE2MDgyODQxMjd9.A2DR0n-6ljXowVuM2KtAN9hzkZNVnIwiJmMMAixHdzM
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
+
 {
-  "name": "ABC",
-  "phone_number": "2313123123",
-  "birthdate": "21/3",
+  "student_name": "ABC",
+  "phone_number": "23232232",
+  "birthdate": "22-2",
   "address": "22323 HHT",
   "class_id": "5fdc576e24109624d024dcb0"
 }
@@ -108,4 +112,39 @@ Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3
   "birthdate": "21/3",
   "address": "22323 HHT",
   "class_id": "5fdc576e24109624d024dcb0"
+}
+
+###
+POST http://localhost:3000/class/create
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
+
+{
+  "class_name": "Tin2312312",
+  "phone_number": "sdsadasd"
+}
+
+###
+// Update User
+PUT http://localhost:3000/users/600a4d4c1235f3299804f5d4
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
+
+{
+  "student_name": "TTT123",
+  "birthdate": "2/2",
+  "phone_number": "1232131",
+  "address": "123 D"
+}
+
+###
+// Update Student
+PUT http://localhost:3000/students/600a4d321235f3299804f5d2
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
+
+{
+  "name": "JIN22",
+  "birthdate": "23123213"
+  
 }

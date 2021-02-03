@@ -1,8 +1,9 @@
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/Project_01", {
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb+srv://dbAdmin1:Data1234@qlhs.yhzsi.mongodb.net/QLHS', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false
+  useFindAndModify: false,
 });
 
 const studentSchema = new mongoose.Schema({
@@ -13,6 +14,6 @@ const studentSchema = new mongoose.Schema({
   class_id: String,
 });
 
-const Student = mongoose.model("Student", studentSchema, "Student");
+const Student = mongoose.model('Student', studentSchema, 'Student');
 
 module.exports = Student;

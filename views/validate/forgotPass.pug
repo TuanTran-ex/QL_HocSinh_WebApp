@@ -3,7 +3,8 @@ extends ../layout_student
 block content
     .container.contents-container
         h1 Forgot Pass
-        form.create-box(action="/auth/forgotpass", method="POST")
+        form.create-box(id="forgotPass-form")
             input.form-control(name="username", type="text", placeholder="Username")
             input.form-control(name="newpass", type="text", placeholder="New Password")
-            button.btn.btn-primary Submit
+            button.btn.btn-primary(id="forgotPass-btn") Submit
+        p(id="alert", style="color: red; display: none")

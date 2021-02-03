@@ -1,4 +1,7 @@
 const express = require('express');
+const passport = require('../middlewares/passport');
+const path = require('path');
+
 const Users = require('../model/users.model');
 
 const controller = require('../controller/Class.controller');
@@ -6,15 +9,12 @@ const controller = require('../controller/Class.controller');
 const router = express.Router();
 
 router.use(async (req, res, next) => {
-  const id = req.jwtDecoded._id;
-  const user = await Users.findById(id);
+  const user = req.user;
   if (!user.isAdmin) {
-    return res.status(403).json({
-      code: 403,
-      message: 'Not have permission to view this directory or page'
-    });
-  }
-  else next();
+    return res
+      .status(403)
+      .sendFile(path.join(__dirname, '../public', 'html', '403_page.html'));
+  } else next();
 });
 
 router.get('/', controller.index);

@@ -3,8 +3,9 @@ extends ../layout_student
 block content
     .container.contents-container
         h1 Register
-        form.create-box(action="/auth", method="POST")
+        form.create-box(id="register-form")
             input.form-control(name="username", type="text", placeholder="Username")
             input.form-control(name="password", type="text", placeholder="Password")
             input.form-control(name="studentID", type="text", placeholder="Student ID")
-            button.btn.btn-primary Register
+            button.btn.btn-primary(id="registerBtn") Register
+        p(id="alert", style="color: red; display: none")
