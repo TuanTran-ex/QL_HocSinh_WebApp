@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   .container.contents-container
-    h1 Student View
+    h1 Teacher View
     table.table
       thead  
         th(scope="col") Name
@@ -13,18 +13,18 @@ block content
         th(scope="col") Action
       tbody
           tr 
-            td= student_item.name
-            td= student_item.birthdate
-            td= student_item.phone_number
-            td= student_item.address 
+            td= teacher_item.name
+            td= teacher_item.birthdate
+            td= teacher_item.phone_number
+            td= teacher_item.address 
             td= class_name
             td
               button(class="view-btn btn btn-danger", id="editBtn") Edit
-              button(class="view-btn btn btn-danger", id="delStudent-btn") Delete
-    form(id="update-student-form", class="update-form")
+              button(class="view-btn btn btn-danger", id="delTeacher-btn") Delete
+    form(id="update-teacher-form", class="update-form")
       input.form-control(name="username", type="text", placeholder="Name")
       input.form-control(name="date", type="text", placeholder="Ngày sinh")
       input.form-control(name="sdt", type="text", placeholder="SĐT")
       input.form-control(name="address", type="text", placeholder="Nơi ở")
       p(id="alert", style="color: red; display: none")
-      button.btn.btn-primary(id="updateStudentBtn") Submit
+      button.btn.btn-primary(id="updateTeacherBtn") Submit

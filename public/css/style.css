@@ -34,6 +34,15 @@ select {
     margin-right: 24px;
 }
 
+.update-form {
+    width: 50%;
+    margin: 0 auto;
+    display: none;
+}
+.update-form input {
+    margin-bottom: 16px;
+}
+
 /* --------- Navbar ---------- */
 nav {
     background-color: #4838B4;
@@ -52,23 +61,48 @@ nav ul li a:hover {
 }
 
 /* --------- Student ---------- */
-.update-student-form {
+/* #update-student-form {
     width: 50%;
     margin: 0 auto;
     display: none;
 }
-.update-student-form input {
+#update-student-form input {
     margin-bottom: 16px;
-}
+} */
 
 /* --------- Class ---------- */
-.update-class-form {
+/* .update-class-form {
     width: 50%;
     margin: 0 auto;
     display: none;
 }
 .update-class-form input {
     margin-bottom: 16px;
+} */
+h2 {
+    display: inline;
+}
+#changeTeacherBtn {
+    display: inline;
+    margin-left: 24px;
+    margin-bottom: 16px;
+}
+#changeTeacherForm {
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 0.7fr 0.1fr 0.2fr;
+    column-gap: 36px;
+}
+#addStudentBtn {
+    display: inline;
+    margin-left: 24px;
+    margin-bottom: 16px;
+}
+#addStudentForm {
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 0.7fr 0.1fr 0.2fr;
+    column-gap: 36px;
 }
 
 /* ------ Footer ------------ */

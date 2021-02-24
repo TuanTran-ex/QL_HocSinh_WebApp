@@ -6,7 +6,7 @@ mongoose.connect('mongodb+srv://dbAdmin1:Data1234@qlhs.yhzsi.mongodb.net/QLHS', 
   useFindAndModify: false,
 });
 
-const studentSchema = new mongoose.Schema({
+const teacherSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -14,12 +14,8 @@ const studentSchema = new mongoose.Schema({
   phone_number: String,
   birthdate: String,
   address: String,
-  classID: {
-    type: String,
-    required: true,
-  },
 });
 
-const Student = mongoose.model('Student', studentSchema, 'Student');
+const Teachers = mongoose.model('Teachers', teacherSchema, 'Teachers');
 
-module.exports = Student;
+module.exports = Teachers;

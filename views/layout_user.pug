@@ -15,34 +15,8 @@ html(lang="en")
               a.nav-link(href='/users/changepass') Change Password
               a.nav-link(href='/auth/logout') Logout
 
-    .container.contents-container
-        h1 Profile
-        table.table
-          thead  
-            th(scope="col") Name
-            th(scope="col") Ngày sinh
-            th(scope="col") SĐT
-            th(scope="col") Nơi ở
-            th(scope="col") Class name
-            th(scope="col") Action
-          tbody
-              tr 
-                td= item.name
-                td= item.birthdate
-                td= item.phone_number
-                td= item.address
-                td= class_name
-                td
-                  button(class="view-btn btn btn-danger", id="editBtn") Edit
-                  a(class="btn btn-primary", href= "/class/" + class_id) Class Info
-        form(id="update-student-form", class="update-form")
-          input.form-control(class="stutdent-update-input", name="username", type="text", placeholder="Name")
-          input.form-control(class="stutdent-update-input", name="date", type="text", placeholder="Ngày sinh")
-          input.form-control(class="stutdent-update-input", name="sdt", type="text", placeholder="SĐT")
-          input.form-control(class="stutdent-update-input", name="address", type="text", placeholder="Nơi ở")
-          p(id="alert", style="color: red; display: none")
-          button.btn.btn-primary(id="updateUserBtn") Submit
-  
+block content
+
   footer
     .copyright
       span Copyright @JIN20

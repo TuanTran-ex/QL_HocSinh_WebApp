@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+    .container.contents-container
+        h1 Create Teacher
+        a.use-link(href="/teachers") Teacher
+        form.create-box(id="creatTeacher-form")
+            input.form-control(name="teacher_name", type="text", placeholder="Name")
+            input.form-control(name="phone_number", type="text", placeholder="SĐT")
+            input.form-control(name="birthdate", type="text", placeholder="Ngày sinh")
+            input.form-control(name="address", type="text", placeholder="Nơi ở")
+            button.btn.btn-primary(id="createTeacher-btn") Create
+        p(id="alert", style="color: red; display: none")

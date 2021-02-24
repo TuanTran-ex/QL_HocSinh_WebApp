@@ -8,7 +8,9 @@ const studentRouter = require('./route/Student.route');
 const loginRouter = require('./route/Login.route');
 const adminRouter = require('./route/Admin.route');
 const userRouter = require('./route/User.route');
+const teacherRouter = require('./route/Teacher.route');
 
+const permit = require('./middlewares/Authorization');
 const passport = require('./middlewares/passport');
 
 const app = express();
@@ -33,8 +35,9 @@ app.use(
 
 app.use('/class', classRouter);
 app.use('/students', studentRouter);
-app.use('/admin', adminRouter);
-app.use('/users', userRouter);
+app.use('/teachers', teacherRouter);
+app.use('/admin', permit('admin'), adminRouter);
+app.use('/users', permit('student', 'teacher'), userRouter);
 
 app.listen(port, function () {
   console.log('App listen on port ' + port);

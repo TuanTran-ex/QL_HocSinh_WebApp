@@ -1,21 +1,35 @@
-// Register
+// Register student
 POST http://localhost:3000/auth
 Content-Type: application/json
 
 {
-  "username": "TAT11112",
+  "username": "Student02",
   "password": "12345678",
-  "studentID": "60167eceb72a5832ec7ffded"
+  "id": "602f7ece66a6462888e33436",
+  "role": "student"
 }
 
 ###
-// Register admin
-POST http://localhost:3000/auth/admin
+// Register Teacher
+POST http://localhost:3000/auth
 Content-Type: application/json
 
 {
-  "username": "admin123",
-  "password": "admin123"
+  "username": "Teacher01",
+  "password": "12345678",
+  "teacherID": "602f65c775405a344ca2dd7f"
+}
+
+###
+
+// Register admin
+POST http://localhost:3000/auth/admin
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
+
+{
+  "username": "TuanTranad",
+  "password": "2313122"
 }
 
 ###
@@ -102,6 +116,7 @@ Content-Type: application/json
 Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
 
 ###
+// Create student
 POST http://localhost:3000/students/create
 Content-Type: application/json
 Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
@@ -111,10 +126,11 @@ Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3
   "phone_number": "2313123123",
   "birthdate": "21/3",
   "address": "22323 HHT",
-  "class_id": "5fdc576e24109624d024dcb0"
+  "class_id": "6007f74c6320cf16bcb5b6fa"
 }
 
 ###
+// Create class
 POST http://localhost:3000/class/create
 Content-Type: application/json
 Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
@@ -138,13 +154,58 @@ Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3
 }
 
 ###
+// ChangePass User
+PUT http://localhost:3000/users
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDJmOGUzZmU3NGZlNTJhMGNiZWY0Y2IiLCJpYXQiOjE2MTQxNTI1OTN9.LRKeSBnwi70W5zDcDTidVmLNcs05jCPTcYUpjLubv-4
+
+{
+  "username": "Student011123",
+  "password": "11231312312"
+}
+
+###
 // Update Student
-PUT http://localhost:3000/students/600a4d321235f3299804f5d2
+PUT http://localhost:3000/students/602f7ebc66a6462888e33435
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDJmOGQ2NmU3NGZlNTJhMGNiZWY0YzkiLCJpYXQiOjE2MTQxNTEyNTF9.aBWB4oFxmhjdK6Gr9YCJmEdRfUswTAqDlMQ-A9quCOA
+
+{
+  "phone_number": "111111111"
+}
+
+###
+// Create Teacher
+POST http://localhost:3000/teachers/create
 Content-Type: application/json
 Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
 
 {
-  "name": "JIN22",
-  "birthdate": "23123213"
-  
+  "teacher_name": "Teacher 04",
+  "phone_number": "11111",
+  "birthdate": "1/3",
+  "address": "22323 HHT",
+  "class_id": "60110e36e2a31d28c0192ae2"
 }
+
+###
+// Update Teacher
+PUT http://localhost:3000/teachers/602e2d09cf061006b861d6f6
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
+
+{
+  "name": "ABCD"
+}
+
+###
+// Update Class
+PUT http://localhost:3000/class/602f75277964ad242c197643
+Content-Type: application/json
+Cookie: auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmRlZDc1OWE3NDgzYjIyZTBjNzQ2OTAiLCJpYXQiOjE2MTA5NTI5NDF9.pmsiBug_kRRMFRYpojuiaypaszFIo53YLdA_cX82anQ
+
+{
+  "teacherID": "602f65c775405a344ca2dd7f"
+}
+
+###

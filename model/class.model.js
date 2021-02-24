@@ -7,8 +7,15 @@ mongoose.connect('mongodb+srv://dbAdmin1:Data1234@qlhs.yhzsi.mongodb.net/QLHS', 
 });
 
 const classSchema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    required: true,
+  },
   phone_number: String,
+  teacherID: {
+    type: String,
+    default: null,
+  },
 });
 
 const Class = mongoose.model('Class', classSchema, 'Class');

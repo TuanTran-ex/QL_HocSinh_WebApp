@@ -1,4 +1,6 @@
 $(document).ready(function () {
+  $('#changeTeacherForm').css({"display": "none"});
+  $('#addStudentForm').css({"display": "none"});
   // Student event
   $('#createStudent-btn').click((e) => {
     e.preventDefault();
@@ -21,15 +23,14 @@ $(document).ready(function () {
         location.replace('/students');
       },
       error: function (err) {
-        console.log(err);
         Output('Dữ liệu nhập bị sai. Mời nhập lại');
       },
     });
   });
 
-  $('#updateBtn').click(function (e) {
+  $('#updateStudentBtn').click(function (e) {
     e.preventDefault();
-    const inputArr = $('.student-update-input');
+    const inputArr = $('#update-student-form > input');
     const data = {
       name: inputArr[0].value === '' ? undefined : inputArr[0].value,
       birthdate: inputArr[1].value === '' ? undefined : inputArr[1].value,
@@ -53,8 +54,8 @@ $(document).ready(function () {
     });
   });
 
-  $('#editStudent-btn').click(function (e) {
-    $('.update-student-form').toggle();
+  $('#editBtn').click(function (e) {
+    $('#update-student-form').toggle();
   });
 
   $('#delStudent-btn').click(function (e) {
@@ -67,6 +68,80 @@ $(document).ready(function () {
       dataType: 'html',
       success: function (response) {
         location.replace('/students');
+      },
+      error: function (error) {
+        alert('Không thể xóa student');
+      },
+    });
+  });
+
+  // Teacher event
+  $('#createTeacher-btn').click((e) => {
+    e.preventDefault();
+    const inputArr = $(
+      '#creatTeacher-form > input, #creatTeacher-form > select'
+    );
+    const data = {
+      teacher_name: inputArr[0].value,
+      phone_number: inputArr[1].value,
+      birthdate: inputArr[2].value,
+      address: inputArr[3].value,
+    };
+    $.ajax({
+      type: 'POST',
+      url: '/teachers/create',
+      data: data,
+      dataType: 'json',
+      success: function (response) {
+        location.replace('/teachers');
+      },
+      error: function (err) {
+        Output('Dữ liệu nhập bị sai. Mời nhập lại');
+      },
+    });
+  });
+
+  $('#updateTeacherBtn').click(function (e) {
+    e.preventDefault();
+    const inputArr = $('#update-teacher-form > input');
+    const data = {
+      name: inputArr[0].value === '' ? undefined : inputArr[0].value,
+      birthdate: inputArr[1].value === '' ? undefined : inputArr[1].value,
+      phone_number: inputArr[2].value === '' ? undefined : inputArr[2].value,
+      address: inputArr[3].value === '' ? undefined : inputArr[3].value,
+    };
+    console.log(data);
+
+    const part = location.pathname.split('/');
+    const id = part[2];
+    $.ajax({
+      type: 'PUT',
+      url: '/teachers/' + id,
+      data: data,
+      dataType: 'html',
+      success: function (response) {
+        location.reload();
+      },
+      error: function (err) {
+        Output('Dữ liệu nhập bị sai. Mời nhập lại');
+      },
+    });
+  });
+
+  $('#editBtn').click(function (e) {
+    $('#update-teacher-form').toggle();
+  });
+
+  $('#delTeacher-btn').click(function (e) {
+    e.preventDefault();
+    const part = location.pathname.split('/');
+    const id = part[2];
+    $.ajax({
+      type: 'DELETE',
+      url: '/teachers/' + id,
+      dataType: 'html',
+      success: function (response) {
+        location.replace('/teachers');
       },
       error: function (error) {
         alert('Không thể xóa student');
@@ -113,7 +188,7 @@ $(document).ready(function () {
     });
   });
 
-  $('#classUpdateBtn').click(function (e) {
+  $('#updateClassBtn').click(function (e) {
     e.preventDefault();
     const inputArr = $('.class-update-input');
     const data = {
@@ -136,9 +211,76 @@ $(document).ready(function () {
     });
   });
 
-  $('#editClass-btn').click(function (e) {
-    $('.update-class-form').toggle();
+  $('#editBtn').click(function (e) {
+    $('#update-class-form').toggle();
   });
+  
+  $('#changeTeacherBtn').click(function (e) {
+    $('#changeTeacherForm').toggle();
+  })
+  
+  $('#changeTeacherSubmit').click(function (e) {
+    e.preventDefault();
+    const input = $('#changeTeacherForm > select');
+    const data = {
+      teacherID: input[0].value,
+    };
+    const part = location.pathname.split('/');
+    const id = part[2];
+    $.ajax({
+      type: "PUT",
+      url: "/class/" + id,
+      data: data,
+      dataType: 'html',
+      success: function (response) {
+        location.reload();
+      }
+    });
+  })
+
+  $('#addStudentBtn').click(function (e) {
+    $('#addStudentForm').toggle();
+  })
+
+  $('#addStudentSubmit').click(function (e) { 
+    e.preventDefault();
+    const input = $('#addStudentForm > select');
+    const part = location.pathname.split('/');
+    const id = part[2];
+    const data = {
+      classID: id,
+    }
+    $.ajax({
+      type: "PUT",
+      url: "/students/" + input[0].value,
+      data: data,
+      dataType: "html",
+      success: function (response) {
+        location.reload();
+      }
+    });
+  });
+
+  $('.removeStudent').click(function (e) { 
+    e.preventDefault();
+    const data = {
+      classID: null,
+    }
+    const studentID = $(this).val();
+    console.log(data);
+    $.ajax({
+      type: "PUT",
+      url: "/students/" + studentID,
+      data: data,
+      dataType: "html",
+      success: function (response) {
+        location.reload();
+      },
+      error: function (err) {
+        // console.log(err);
+      },
+    });
+  })
 
   // User event
   $('#updateUserBtn').click((e) => {
@@ -161,7 +303,6 @@ $(document).ready(function () {
         location.reload();
       },
       error: function (error) {
-        console.log(error);
         Output('Dữ liệu nhập bị sai. Mời nhập lại');
       },
     });
@@ -204,7 +345,8 @@ $(document).ready(function () {
       data: data,
       dataType: 'json',
       success: function (response) {
-        if (response.admin) location.replace('/admin');
+        // console.log(response);
+        if (response.data.user.role === 'admin') location.replace('/admin');
         else location.replace(`/users/${response.data.user._id}`);
       },
       error: function (error) {
@@ -215,11 +357,12 @@ $(document).ready(function () {
 
   $('#registerBtn').click((e) => {
     e.preventDefault();
-    const inputArr = $('#register-form > input');
+    const inputArr = $('#register-form > input, #register-form > select');
     const data = {
       username: inputArr[0].value,
       password: inputArr[1].value,
-      studentID: inputArr[2].value,
+      id: inputArr[2].value,
+      role: inputArr[3].value,
     };
     $.ajax({
       type: 'POST',
@@ -230,9 +373,10 @@ $(document).ready(function () {
         location.replace('/auth');
       },
       error: function (error) {
-        const res = error.responseJSON;
-        if (res.code === 409) Output('Username đã tồn tại. Mời nhập lại');
-        else Output('Dữ liệu không đúng điều kiện. Mời nhập lại');
+        // const res = error.responseJSON;
+        // if (res.code === 409) Output('Username đã tồn tại. Mời nhập lại');
+        // else Output('Dữ liệu không đúng điều kiện. Mời nhập lại');
+        console.log(error);
       },
     });
   });

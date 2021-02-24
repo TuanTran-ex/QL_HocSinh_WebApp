@@ -1,4 +1,4 @@
-extends ../layout_student
+extends ../layout_login
 
 block content
     .container.contents-container
@@ -6,6 +6,9 @@ block content
         form.create-box(id="register-form")
             input.form-control(name="username", type="text", placeholder="Username")
             input.form-control(name="password", type="text", placeholder="Password")
-            input.form-control(name="studentID", type="text", placeholder="Student ID")
+            input.form-control(name="id", type="text", placeholder="ID")
+            select.form-control(name="role")
+                option(value= "teacher") Teacher
+                option(value= "student") Student
             button.btn.btn-primary(id="registerBtn") Register
         p(id="alert", style="color: red; display: none")

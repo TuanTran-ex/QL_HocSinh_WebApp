@@ -22,21 +22,20 @@ module.exports.search = async (req, res) => {
     res.render('student/index', { student_list: studentList, search_key: q });
   } catch (err) {
     res.status(400).json({
-      code: 404,
       success: false,
       message: 'Can not find',
       error: err,
     });
   }
 };
+
 module.exports.view = async (req, res) => {
   const id = req.params.id;
   try {
     const student_item = await Student.findById(id);
-    const item = await Class.findById(student_item.class_id);
+    const item = await Class.findById(student_item.classID);
     if (!student_item) {
       res.status(404).json({
-        code: 404,
         success: false,
         message: 'Student or class not found',
       });
@@ -48,7 +47,6 @@ module.exports.view = async (req, res) => {
     }
   } catch (err) {
     res.status(400).json({
-      code: 400,
       success: false,
       message: 'Can not find. Maybe syntax of id is wrong',
       error: err,
@@ -66,7 +64,6 @@ module.exports.postCreate = async (req, res) => {
   const { error } = createStudentValidation(req.body);
   if (error) {
     res.status(400).json({
-      code: 400,
       success: false,
       message: 'Data error',
       error: error.details[0].message,
@@ -77,18 +74,16 @@ module.exports.postCreate = async (req, res) => {
       phone_number: req.body.phone_number,
       birthdate: req.body.birthdate,
       address: req.body.address,
-      class_id: req.body.class_id,
+      classID: req.body.class_id,
     });
     try {
       newDocument.save();
       res.status(200).json({
-        code: 200,
         success: true,
         data: newDocument,
       });
     } catch (err) {
       res.status(400).json({
-        code: 400,
         success: false,
         message: 'Can not create new user',
         error: err,
@@ -104,20 +99,17 @@ module.exports.delete = async (req, res) => {
     const removedUser = await User.findOneAndRemove({ studentID: id });
     if (!removedStudent) {
       res.status(404).json({
-        code: 404,
         success: false,
         message: 'Wrong ID',
       });
     } else {
       res.status(200).json({
-        code: 200,
         success: true,
         data: removedStudent,
       });
     }
   } catch (err) {
     res.status(400).json({
-      code: 400,
       success: false,
       message: 'Can not delete. Wrong syntax',
       error: err,
@@ -129,33 +121,24 @@ module.exports.updateStudent = async (req, res) => {
   const { error } = updateStudentValidation(req.body);
   if (error) {
     res.status(400).json({
-      code: 400,
       success: false,
       message: 'Data error',
       error: error.details[0].message,
     });
   } else {
     const id = req.params.id;
-    const update = await utils.update(id, req.body);
-    if (update.code === 404) {
-      res.status(404).json({
-        code: 404,
-        success: false,
-        message: 'Student not found! Wrong ID',
+    utils
+      .update(id, req.body)
+      .then((student) => {
+        res.status(200).json({ success: true, data: student });
+      })
+      .catch((err) => {
+        let resp = Object.assign(
+          { success: false },
+          { code: err.code, message: err.message || err.messageDev }
+        );
+        if (err.code === 9) res.status(404).json(resp);
+        else res.status(400).json(resp);
       });
-    } else if (update.code === 200) {
-      res.status(200).json({
-        code: 200,
-        success: true,
-        data: update.data,
-      });
-    } else if (update.code === 400) {
-      res.status(400).json({
-        code: 400,
-        success: false,
-        message: 'Bad request. Wrong syntax Student id',
-        error: update.data,
-      });
-    }
   }
 };

@@ -8,7 +8,8 @@ const registerValidation = (data) => {
       .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
       .min(6)
       .required(),
-    studentID: Joi.string().min(6),
+    id: Joi.string().min(6),
+    role: Joi.string().required(),
   });
   return schema.validate(data);
 };
@@ -48,6 +49,7 @@ const updateClassValidation = (data) => {
   const schema = Joi.object({
     name: Joi.string().min(1).max(30),
     phone_number: Joi.string().regex(new RegExp('^[0-9]*$')).min(6),
+    teacherID: Joi.string().min(6),
   });
   return schema.validate(data);
 };
@@ -76,6 +78,34 @@ const updateStudentValidation = (data) => {
       .max(10)
       .regex(new RegExp('^[0-9]*[/-]*[0-9]*[/-]*[0-9]*[/-]*$')),
     address: Joi.string().min(1).max(255),
+    classID: Joi.string().allow(null, ''),
+  });
+  return schema.validate(data);
+};
+
+// Teacher
+const createTeacherValidation = (data) => {
+  const schema = Joi.object({
+    teacher_name: Joi.string().min(1).max(30).required(),
+    phone_number: Joi.string().min(1).max(30).regex(new RegExp('^[0-9]*$')),
+    birthdate: Joi.string()
+      .min(1)
+      .max(10)
+      .regex(new RegExp('^[0-9]*[/-]*[0-9]*[/-]*[0-9]*[/-]*$')),
+    address: Joi.string().min(1).max(255),
+  });
+  return schema.validate(data);
+};
+
+const updateTeacherValidation = (data) => {
+  const schema = Joi.object({
+    name: Joi.string().min(1).max(30),
+    phone_number: Joi.string().min(1).max(30).regex(new RegExp('^[0-9]*$')),
+    birthdate: Joi.string()
+      .min(1)
+      .max(10)
+      .regex(new RegExp('^[0-9]*[/-]*[0-9]*[/-]*[0-9]*[/-]*$')),
+    address: Joi.string().min(1).max(255),
   });
   return schema.validate(data);
 };
@@ -88,4 +118,6 @@ module.exports = {
   updateClassValidation,
   createStudentValidation,
   updateStudentValidation,
+  createTeacherValidation,
+  updateTeacherValidation,
 };

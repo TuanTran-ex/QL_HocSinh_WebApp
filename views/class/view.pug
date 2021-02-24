@@ -1,36 +1,94 @@
 extends ../layout
 
 block content
-  .container.contents-container
-    h1 Class View
-    a.use-link(href="/class") Class
-    table.table
-      thead  
-        th(scope="col") Name
-        th(scope="col") SĐT
-        th(scope="col") Tổng số học sinh
-        th(scope="col") Action
-      tbody
+
+  - if (isAdmin === undefined) isAdmin = true;
+  if (isAdmin && true)
+    .container.contents-container
+      h1 Class View
+      a.use-link(href="/class") Class
+      table.table
+        thead  
+          th(scope="col") Name
+          th(scope="col") SĐT
+          th(scope="col") Tổng số học sinh
+          th(scope="col") Action
+        tbody
+            tr
+              td= class_item.name
+              td= class_item.phone_number
+              td= student_number
+              td(id="btn-row")
+                button(class="view-btn btn btn-danger", id='editBtn') Edit
+                button(class="view-btn btn btn-danger", id="delClass-btn") Delete
+      form(action="/class" + class_item.id, id="update-class-form", class="update-form")
+        input.form-control(class="class-update-input", name="username", type="text", placeholder="Name")
+        input.form-control(class="class-update-input", name="sdt", type="text", placeholder="SĐT")
+        p(id="alert", style="color: red; display: none")
+        button.btn.btn-primary(id="updateClassBtn") Submit
+      h2 Chủ nhiệm
+      button(class="btn btn-danger", id="changeTeacherBtn") Change
+      form(id="changeTeacherForm")
+        select.form-control(name="teacher_id")
+          each item in teacher_list 
+            option(value= item._id)= item.name
+        button.btn.btn-primary(id="changeTeacherSubmit") Submit
+      table.table
+        thead  
+          th(scope="col") Name
+          th(scope="col") Action
+        tbody
           tr
-            td= class_item.name
-            td= class_item.phone_number
-            td= student_number
-            td(id="btn-row")
-              button(class="view-btn btn btn-danger", id='editClass-btn') Edit
-              button(class="view-btn btn btn-danger", id="delClass-btn") Delete
-    form(action="/class" + class_item.id, class="update-class-form")
-      input.form-control(class="class-update-input", name="username", type="text", placeholder="Name")
-      input.form-control(class="class-update-input", name="sdt", type="text", placeholder="SĐT")
-      p(id="alert", style="color: red; display: none")
-      button.btn.btn-primary(id="classUpdateBtn") Submit
-    h2 Danh sách học sinh
-    table.table
-      thead  
-        th(scope="col") Name
-        th(scope="col") Action
-      tbody
-        each student in student_list
-          tr
-            td= student.name
+            td= teacher_item.name
             td
-              a(href="/students/" + student._id, class="view-btn btn btn-info") More
+              a(href="/teachers/" + teacher_item._id, class="view-btn btn btn-info") More
+      
+      h2 Danh sách học sinh
+      button(class="btn btn-primary", id="addStudentBtn") Add
+      form(id="addStudentForm")
+        select.form-control(name="student_id")
+          each item in allStudent_list 
+            option(value= item._id)= item.name
+        button.btn.btn-primary(id="addStudentSubmit") Submit
+      table.table
+        thead  
+          th(scope="col") Name
+          th(scope="col") Action
+        tbody
+          each student in student_list
+            tr
+              td= student.name
+              td
+                a(href="/students/" + student._id, class="view-btn btn btn-info") More
+                button.btn.btn-danger(class="removeStudent", value=student._id) Remove
+  else 
+    .container.contents-container
+      h1 Class View
+      a.use-link(href="/class") Class
+      table.table
+        thead  
+          th(scope="col") Name
+          th(scope="col") SĐT
+          th(scope="col") Tổng số học sinh
+        tbody
+            tr
+              td= class_item.name
+              td= class_item.phone_number
+              td= student_number
+            
+      h2 Chủ nhiệm
+      table.table
+        thead  
+          th(scope="col") Name
+        tbody
+          tr
+            td= teacher_item.name
+      
+      h2 Danh sách học sinh
+      table.table
+        thead  
+          th(scope="col") Name
+        tbody
+          each student in student_list
+            tr
+              td= student.name
