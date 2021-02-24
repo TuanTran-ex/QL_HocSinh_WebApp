@@ -13,7 +13,9 @@ npm start
 ```
 ### Tài khoản đăng nhập
 Admin: admin123 - Pass: admin123  
-User: user123 - Pass: user123
+User: 
++ Student: user01 - Pass: user01
++ Teacher: user02 - Pass: user02
 
 Trang web chạy ở link: `http://localhost:3000`
 
