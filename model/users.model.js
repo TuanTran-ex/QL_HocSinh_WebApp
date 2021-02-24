@@ -15,10 +15,6 @@ const usersSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
   role: {
     type: String,
     enum: ['admin', 'teacher', 'student'],
