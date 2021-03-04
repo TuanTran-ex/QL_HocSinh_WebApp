@@ -69,26 +69,33 @@ module.exports.postCreate = async (req, res) => {
       error: error.details[0].message,
     });
   } else {
-    const newDocument = new Student({
-      name: req.body.student_name,
-      phone_number: req.body.phone_number,
-      birthdate: req.body.birthdate,
-      address: req.body.address,
-      classID: req.body.class_id,
-    });
-    try {
-      newDocument.save();
-      res.status(200).json({
-        success: true,
-        data: newDocument,
+    utils
+      .userGenerator(req.body.student_name, req.body.role)
+      .then((user) => {
+        console.log(user);
+        const newDocument = new Student({
+          name: req.body.student_name,
+          phone_number: req.body.phone_number,
+          birthdate: req.body.birthdate,
+          address: req.body.address,
+          classID: req.body.class_id,
+          userID: user.newUser._id,
+        });
+        newDocument.save();
+        res.status(200).json({
+          success: true,
+          data: newDocument,
+          password: user.password,
+        });
+      })
+      .catch((err) => {
+        res.status(400).json({
+          code: err.code,
+          success: false,
+          message: 'Can not create student',
+          error: err,
+        });
       });
-    } catch (err) {
-      res.status(400).json({
-        success: false,
-        message: 'Can not create new user',
-        error: err,
-      });
-    }
   }
 };
 
@@ -96,7 +103,7 @@ module.exports.delete = async (req, res) => {
   const id = req.params.id;
   try {
     const removedStudent = await Student.findByIdAndRemove(id);
-    const removedUser = await User.findOneAndRemove({ studentID: id });
+    const removedUser = await User.findByIdAndRemove(removedStudent.userID);
     if (!removedStudent) {
       res.status(404).json({
         success: false,
@@ -127,10 +134,11 @@ module.exports.updateStudent = async (req, res) => {
     });
   } else {
     const id = req.params.id;
+    const student = await Student.findById(id);
     utils
-      .update(id, req.body)
-      .then((student) => {
-        res.status(200).json({ success: true, data: student });
+      .update(student.userID, req.body, 'student')
+      .then((user) => {
+        res.status(200).json({ success: true, data: user });
       })
       .catch((err) => {
         let resp = Object.assign(

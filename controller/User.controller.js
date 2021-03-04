@@ -26,24 +26,17 @@ module.exports.index = async (req, res) => {
         .status(403)
         .sendFile(path.join(__dirname, '../public', 'html', '403_page.html'));
     } else {
-      if (user.studentID != null) {
-        const student = await Student.findById(user.studentID);
-        if (student) {
-          const classItem = await Class.findOne({ _id: student.classID });
-          res.render('user/index', {
-            item: student,
-            isAdmin: false,
-            class_name: classItem ? classItem.name : '',
-            class_id: classItem ? classItem._id : '',
-          });
-        } else {
-          res.status(500).json({
-            success: false,
-            message: 'Wrong data user',
-          });
-        }
-      } else if (user.teacherID != null) {
-        const teacher = await Teachers.findById(user.teacherID);
+      const student = await Student.findOne({ userID: userID });
+      if (student) {
+        const classItem = await Class.findOne({ _id: student.classID });
+        res.render('user/index', {
+          item: student,
+          isAdmin: false,
+          class_name: classItem ? classItem.name : '',
+          class_id: classItem ? classItem._id : '',
+        });
+      } else {
+        const teacher = await Teachers.findOne({userID: userID});
         if (teacher) {
           const classItem = await Class.findOne({ teacherID: teacher._id });
           res.render('user/index', {
@@ -79,8 +72,9 @@ module.exports.update = async (req, res) => {
   } else {
     const id = req.params.id;
     const user = await User.findById(id);
+    const role = user.role;
     utils
-      .update(user.studentID, req.body)
+      .update(id, req.body, role)
       .then((user) => {
         res.status(200).json({ success: true, data: user });
       })

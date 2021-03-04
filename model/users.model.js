@@ -15,22 +15,14 @@ const usersSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
   role: {
     type: String,
     enum: ['admin', 'teacher', 'student'],
   },
-  studentID: {
-    type: String,
-    default: null,
-  },
-  teacherID: {
-    type: String,
-    default: null,
-  },
+  isFirstLogin : {
+    type: Boolean,
+    default: true
+  }
 });
 
 const Users = mongoose.model('Users', usersSchema, 'Users');

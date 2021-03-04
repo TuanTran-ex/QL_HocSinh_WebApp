@@ -4,15 +4,25 @@ const Student = require('../model/student.model');
 const Users = require('../model/users.model');
 const Teacher = require('../model/teacher.model');
 const Promise = require('bluebird');
+const randomstring = require("randomstring");
 // Update Student
 const isObjectId = id => (mongoose.Types.ObjectId.isValid(id));
-const update = (id, data) => {
-  return Student.findByIdAndUpdate(id, data).then(student => {
-    if (!student) return Promise.reject({code: 9, messageDev: 'user not existed!'});
-    else return student;
-  }).catch(err => {
-    return Promise.reject({code: 13, messageDev: 'syntax error'});
-  })
+const update = (id, data, role) => {
+  if (role === 'student') {
+    return Student.findOneAndUpdate({userID: id}, data).then(student => {
+      if (!student) return Promise.reject({code: 9, messageDev: 'user not existed!'});
+      else return student;
+    }).catch(err => {
+      return Promise.reject({code: 13, messageDev: 'syntax error'});
+    })
+  } else if (role === 'teacher') {
+    return Teacher.findOneAndUpdate({userID: id}, data).then(teacher => {
+      if (!teacher) return Promise.reject({code: 9, messageDev: 'user not existed!'});
+      else return teacher;
+    }).catch(err => {
+      return Promise.reject({code: 13, messageDev: 'syntax error'});
+    })
+  }
 };
 
 // ChangePass User
@@ -80,4 +90,27 @@ const registerPromise = (data) => {
   });
 };
 
-module.exports = { update, changePass, registerPromise};
+const userGenerator = async (name, role) => {
+  const username = name.replace(/ /g,'');
+  return Users.findOne({ username }).then(async user => {
+    if (user) return Promise.reject({code: 10, messageDev: "username existed!"});
+    else {
+      try {
+        const password = await randomstring.generate(10);;
+        const saltRounds = 10;
+        const hashPass = await bcrypt.hash(password, saltRounds);
+        const newUser = new Users({
+          username,
+          password: hashPass,
+          role: role,
+        });
+        await newUser.save();
+        return {newUser, password};
+      } catch (err) {
+        return Promise.reject({code: 13, messageDev: "syntax error", error: err});
+      }
+    }
+  });
+}
+
+module.exports = { update, changePass, registerPromise, userGenerator};

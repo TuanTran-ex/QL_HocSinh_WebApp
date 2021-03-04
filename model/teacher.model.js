@@ -14,6 +14,10 @@ const teacherSchema = new mongoose.Schema({
   phone_number: String,
   birthdate: String,
   address: String,
+  userID: {
+    type: String,
+    required: true,
+  }
 });
 
 const Teachers = mongoose.model('Teachers', teacherSchema, 'Teachers');

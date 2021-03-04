@@ -43,21 +43,26 @@ module.exports.login = async (req, res) => {
           message: 'Wrong password',
         });
       } else {
-        try {
-          const token = await jwt.sign({ _id: user._id }, process.env.JWT_KEY);
-          res
-          .cookie('auth-token', token, { maxAge: 240000 })
-          .status(200)
-          .json({
-            success: true,
-            data: { user, token },
-          });
-        } catch (err) {
-          res.status(500).json({
-            success: false,
-            message: 'Can not create token',
-            error: err,
-          });
+        if(user.isFirstLogin) {
+          await user.updateOne({isFirstLogin: false});
+          res.status(200).json({code: 5, success: true, message: 'First Login'});
+        } else {
+          try {
+            const token = await jwt.sign({ _id: user._id }, process.env.JWT_KEY);
+            res
+            .cookie('auth-token', token, { maxAge: 240000 })
+            .status(200)
+            .json({
+              success: true,
+              data: { user, token },
+            });
+          } catch (err) {
+            res.status(500).json({
+              success: false,
+              message: 'Can not create token',
+              error: err,
+            });
+          }
         }
       }
     }

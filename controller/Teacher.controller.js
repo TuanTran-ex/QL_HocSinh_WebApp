@@ -43,25 +43,29 @@ module.exports.postCreate = async (req, res) => {
       error: error.details[0].message,
     });
   } else {
-    const newDocument = new Teachers({
-      name: req.body.teacher_name,
-      phone_number: req.body.phone_number,
-      birthdate: req.body.birthdate,
-      address: req.body.address,
-    });
-    try {
+    utils.userGenerator(req.body.teacher_name, req.body.role).then(user => {
+      console.log(user);
+      const newDocument = new Teachers({
+        name: req.body.teacher_name,
+        phone_number: req.body.phone_number,
+        birthdate: req.body.birthdate,
+        address: req.body.address,
+        userID: user.newUser._id,
+      });
       newDocument.save();
       res.status(200).json({
         success: true,
         data: newDocument,
+        password: user.password,
       });
-    } catch (err) {
+    }).catch(err => {
       res.status(400).json({
+        code: err.code,
         success: false,
         message: 'Can not create new user',
         error: err,
       });
-    }
+    })
   }
 };
 
@@ -125,25 +129,19 @@ module.exports.updateTeacher = async (req, res) => {
     });
   } else {
     const id = req.params.id;
-    try {
-      const updateTeacher = await Teachers.findByIdAndUpdate(id, req.body);
-      if (!updateTeacher) {
-        res.status(404).json({
-          success: false,
-          message: 'Teacher not found! Wrong ID',
-        });
-      } else {
-        res.status(200).json({
-          success: true,
-          data: updateTeacher,
-        });
-      }
-    } catch (err) {
-      res.status(400).json({
-        success: false,
-        message: 'Bad request. Wrong syntax Teacher id',
-        error: err,
+    const teacher = Teachers.findById(id);
+    utils
+      .update(teacher.userID, req.body, 'teacher')
+      .then((user) => {
+        res.status(200).json({ success: true, data: user });
+      })
+      .catch((err) => {
+        let resp = Object.assign(
+          { success: false },
+          { code: err.code, message: err.message || err.messageDev }
+        );
+        if (err.code === 9) res.status(404).json(resp);
+        else res.status(400).json(resp);
       });
-    }
   }
 };

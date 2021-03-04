@@ -65,6 +65,7 @@ const createStudentValidation = (data) => {
       .regex(new RegExp('^[0-9]*[/-]*[0-9]*[/-]*[0-9]*[/-]*$')),
     address: Joi.string().min(1).max(255),
     class_id: Joi.string().min(1).max(255).required(),
+    role: Joi.string(),
   });
   return schema.validate(data);
 };
@@ -93,6 +94,7 @@ const createTeacherValidation = (data) => {
       .max(10)
       .regex(new RegExp('^[0-9]*[/-]*[0-9]*[/-]*[0-9]*[/-]*$')),
     address: Joi.string().min(1).max(255),
+    role: Joi.string(),
   });
   return schema.validate(data);
 };

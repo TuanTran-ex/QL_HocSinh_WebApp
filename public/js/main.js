@@ -1,6 +1,7 @@
 $(document).ready(function () {
   $('#changeTeacherForm').css({"display": "none"});
   $('#addStudentForm').css({"display": "none"});
+  
   // Student event
   $('#createStudent-btn').click((e) => {
     e.preventDefault();
@@ -13,6 +14,7 @@ $(document).ready(function () {
       phone_number: inputArr[2].value,
       birthdate: inputArr[3].value,
       address: inputArr[4].value,
+      role: "student",
     };
     $.ajax({
       type: 'POST',
@@ -23,7 +25,8 @@ $(document).ready(function () {
         location.replace('/students');
       },
       error: function (err) {
-        Output('Dữ liệu nhập bị sai. Mời nhập lại');
+        if (err.responseJSON.code === 10) Output('Username or StudentName đã tồn tại. Mời nhập lại')
+        else Output('Dữ liệu nhập bị sai. Mời nhập lại');
       },
     });
   });
@@ -86,6 +89,7 @@ $(document).ready(function () {
       phone_number: inputArr[1].value,
       birthdate: inputArr[2].value,
       address: inputArr[3].value,
+      role: 'teacher',
     };
     $.ajax({
       type: 'POST',
@@ -96,7 +100,8 @@ $(document).ready(function () {
         location.replace('/teachers');
       },
       error: function (err) {
-        Output('Dữ liệu nhập bị sai. Mời nhập lại');
+        if (err.responseJSON.code === 10) Output('Username or TeacherName đã tồn tại. Mời nhập lại')
+        else Output('Dữ liệu nhập bị sai. Mời nhập lại');
       },
     });
   });
@@ -110,7 +115,6 @@ $(document).ready(function () {
       phone_number: inputArr[2].value === '' ? undefined : inputArr[2].value,
       address: inputArr[3].value === '' ? undefined : inputArr[3].value,
     };
-    console.log(data);
 
     const part = location.pathname.split('/');
     const id = part[2];
@@ -267,7 +271,6 @@ $(document).ready(function () {
       classID: null,
     }
     const studentID = $(this).val();
-    console.log(data);
     $.ajax({
       type: "PUT",
       url: "/students/" + studentID,
@@ -277,7 +280,7 @@ $(document).ready(function () {
         location.reload();
       },
       error: function (err) {
-        // console.log(err);
+        alert('Không thể xóa student');
       },
     });
   })
@@ -337,16 +340,17 @@ $(document).ready(function () {
       username: inputArr[0].value,
       password: inputArr[1].value,
     };
-    const cookie = document.cookie;
-    console.log(cookie);
     $.ajax({
       type: 'POST',
       url: '/auth/login',
       data: data,
       dataType: 'json',
       success: function (response) {
-        // console.log(response);
-        if (response.data.user.role === 'admin') location.replace('/admin');
+        if (response.code == 5) {
+          alert('Bạn đăng nhập lần đầu. Mời thay đổi password');
+          location.replace('/auth/forgotpass');
+        } 
+        else if (response.data.user.role === 'admin') location.replace('/admin');
         else location.replace(`/users/${response.data.user._id}`);
       },
       error: function (error) {
@@ -373,10 +377,9 @@ $(document).ready(function () {
         location.replace('/auth');
       },
       error: function (error) {
-        // const res = error.responseJSON;
-        // if (res.code === 409) Output('Username đã tồn tại. Mời nhập lại');
-        // else Output('Dữ liệu không đúng điều kiện. Mời nhập lại');
-        console.log(error);
+        const res = error.responseJSON;
+        if (res.code === 10) Output('Username đã tồn tại. Mời nhập lại');
+        else Output('Dữ liệu không đúng điều kiện. Mời nhập lại');
       },
     });
   });
@@ -406,4 +409,7 @@ $(document).ready(function () {
 function Output(err) {
   $('#alert').css('display', 'block');
   $('#alert').html(err);
+  $('input').focus(function () {
+    $('#alert').css('display', 'none');
+  })
 }
