@@ -12,12 +12,16 @@ block content
             thead  
                 th(scope="col") Name
                 th(scope="col") Nơi ở
+                th(scope="col") username
+                th(scope="col") Password (tạm thời)
                 th(scope="col", class="text-center") Action
             tbody
                 each item in teacher_list
                     tr
                         td= item.name
                         td= item.address
+                        td= item.username
+                        td= item.password
                         td(class="text-center")
                             a(href="/teachers/" + item._id, class="view-btn btn btn-primary") View
 

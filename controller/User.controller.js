@@ -4,13 +4,14 @@ const path = require('path');
 
 const {
   updateStudentValidation,
-  loginValidation,
+  changePassValidation,
 } = require('../middlewares/Validation');
 
 const User = require('../model/users.model');
 const Student = require('../model/student.model');
 const Class = require('../model/class.model');
 const Teachers = require('../model/teacher.model');
+const tmpUsers = require('../model/tmpUsers.model');
 
 module.exports.index = async (req, res) => {
   const userID = req.params.id;
@@ -36,7 +37,7 @@ module.exports.index = async (req, res) => {
           class_id: classItem ? classItem._id : '',
         });
       } else {
-        const teacher = await Teachers.findOne({userID: userID});
+        const teacher = await Teachers.findOne({ userID: userID });
         if (teacher) {
           const classItem = await Class.findOne({ teacherID: teacher._id });
           res.render('user/index', {
@@ -94,18 +95,20 @@ module.exports.changePassPage = (req, res) => {
 };
 
 module.exports.changePass = async (req, res) => {
-  const { error } = loginValidation(req.body);
+  const { error } = changePassValidation(req.body);
   if (error) {
     res.status(400).json({
+      code: 8,
       success: false,
       message: 'Data error',
       error: error.details[0].message,
     });
   } else {
-    const { username, password } = req.body;
+    const { oldPass, newPass } = req.body;
     utils
-      .changePass(username, password)
-      .then((updateUser) => {
+      .changePass(req.user.username, oldPass, newPass)
+      .then(async (updateUser) => {
+        const removeTmpUser = await tmpUsers.findOneAndDelete({ username: req.user.username });
         res.status(200).json({ success: true, data: updateUser });
       })
       .catch((err) => {

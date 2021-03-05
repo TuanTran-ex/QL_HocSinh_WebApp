@@ -1,18 +1,50 @@
 const Student = require('../model/student.model');
 const Class = require('../model/class.model');
 const User = require('../model/users.model');
+const tmpUsers = require('../model/tmpUsers.model');
 const utils = require('../utils/utils');
+const Promise = require('bluebird');
 
 const {
   createStudentValidation,
   updateStudentValidation,
 } = require('../middlewares/Validation');
+const Users = require('../model/users.model');
+
+async function matchCollection() {
+  try {
+    var arrItem = [];
+    const student = await Student.find();
+    for (let i = 0; i < student.length; i++) {
+      const tmpUser = await tmpUsers.findOne({ userID: student[i].userID });
+      const user = await Users.findById(student[i].userID);
+      const obj = {
+        _id: student[i]._id,
+        name: student[i].name,
+        address: student[i].address,
+        username: user.username,
+        password: (tmpUser) ? tmpUser.password : '',
+      };
+      arrItem.push(obj);
+    }
+    return arrItem;
+  } catch (err) {
+    return Promise.reject({ message: 'Data Error', error: err });
+  }
+}
 
 module.exports.index = (req, res) => {
-  Student.find().then(function (student_item) {
-    res.render('student/index', { student_list: student_item });
-  });
+  matchCollection()
+    .then((student_item) => {
+      res.render('student/index', { student_list: student_item });
+    })
+    .catch((err) => {
+      res
+        .status(400)
+        .json({ success: false, message: err.message, error: err });
+    });
 };
+
 module.exports.search = async (req, res) => {
   var q = req.query.q;
   try {
@@ -70,7 +102,7 @@ module.exports.postCreate = async (req, res) => {
     });
   } else {
     utils
-      .userGenerator(req.body.student_name, req.body.role)
+      .userGenerator(req.body.role)
       .then((user) => {
         console.log(user);
         const newDocument = new Student({
@@ -104,6 +136,7 @@ module.exports.delete = async (req, res) => {
   try {
     const removedStudent = await Student.findByIdAndRemove(id);
     const removedUser = await User.findByIdAndRemove(removedStudent.userID);
+    const removedTmpUser = await tmpUsers.findOneAndRemove({userID: removedStudent.userID});
     if (!removedStudent) {
       res.status(404).json({
         success: false,

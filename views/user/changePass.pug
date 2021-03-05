@@ -17,8 +17,9 @@ html(lang="en")
     .container.contents-container
         h1 Change Password
         form.create-box
-            input.form-control(class="change-pass-input", name="username", type="text", placeholder="Username")
+            input.form-control(class="change-pass-input", name="oldpass", type="text", placeholder="Old Password")
             input.form-control(class="change-pass-input", name="newpass", type="text", placeholder="New Password")
+            input.form-control(class="change-pass-input", name="confirmpass", type="text", placeholder="Confirm Password")
             button.btn.btn-primary(id='change-pass') Submit
         p(id="alert", style="color: red; display: none")
   footer

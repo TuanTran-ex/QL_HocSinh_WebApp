@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const Users = require('../model/users.model');
+const tmpUsers = require('../model/tmpUsers.model');
 const utils = require('../utils/utils');
 const {
   registerValidation,
@@ -43,26 +44,34 @@ module.exports.login = async (req, res) => {
           message: 'Wrong password',
         });
       } else {
-        if(user.isFirstLogin) {
-          await user.updateOne({isFirstLogin: false});
-          res.status(200).json({code: 5, success: true, message: 'First Login'});
-        } else {
-          try {
-            const token = await jwt.sign({ _id: user._id }, process.env.JWT_KEY);
+        try {
+          const token = await jwt.sign({ _id: user._id }, process.env.JWT_KEY);
+          if (user.isFirstLogin) {
+            await user.updateOne({isFirstLogin: false});
             res
-            .cookie('auth-token', token, { maxAge: 240000 })
-            .status(200)
-            .json({
-              success: true,
-              data: { user, token },
-            });
-          } catch (err) {
-            res.status(500).json({
-              success: false,
-              message: 'Can not create token',
-              error: err,
-            });
+              .cookie('auth-token', token, { maxAge: 1200000 })
+              .status(200)
+              .json({
+                code: 5,
+                success: true,
+                message: 'First Login',
+                data: { user, token },
+              });
+          } else {
+            res
+              .cookie('auth-token', token, { maxAge: 1200000 })
+              .status(200)
+              .json({
+                success: true,
+                data: { user, token },
+              });
           }
+        } catch (err) {
+          res.status(500).json({
+            success: false,
+            message: 'Can not create token',
+            error: err,
+          });
         }
       }
     }
@@ -78,16 +87,22 @@ module.exports.register = (req, res) => {
   if (error) {
     res.status(400).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   } else {
-    utils.registerPromise(req.body).then(user => {
-      delete user.password;
-      res.status(200).json({ success: true, data: user });
-    }).catch(e => {
-      let resp = Object.assign({ success: false }, { code: e.code, message: e.message || e.messageDev });
-      res.status(400).json(resp);
-    });
+    utils
+      .registerPromise(req.body)
+      .then((user) => {
+        delete user.password;
+        res.status(200).json({ success: true, data: user });
+      })
+      .catch((e) => {
+        let resp = Object.assign(
+          { success: false },
+          { code: e.code, message: e.message || e.messageDev }
+        );
+        res.status(400).json(resp);
+      });
   }
 };
 
@@ -150,6 +165,7 @@ module.exports.forgotPass = async (req, res) => {
         const hashPass = await bcrypt.hash(newpass, saltRounds);
         user.password = hashPass;
         await user.save();
+        
         res.status(200).json({
           success: true,
           data: user,

@@ -314,22 +314,30 @@ $(document).ready(function () {
   $('#change-pass').click((e) => {
     e.preventDefault();
     const inputArr = $('.change-pass-input');
-    const data = {
-      username: inputArr[0].value,
-      password: inputArr[1].value,
-    };
-    $.ajax({
-      type: 'PUT',
-      url: '/users',
-      data: data,
-      dataType: 'html',
-      success: function (response) {
-        location.replace('/auth');
-      },
-      error: function (error) {
-        Output('Sai username hoặc password. Mời nhập lại');
-      },
-    });
+    if (inputArr[1].value != inputArr[2].value) 
+      Output('Mật khẩu xác nhận không đúng. Mời nhập lại')
+    else {
+      const data = {
+        oldPass: inputArr[0].value,
+        newPass: inputArr[1].value,
+      };
+      $.ajax({
+        type: 'PUT',
+        url: '/users',
+        data: data,
+        dataType: 'json',
+        success: function (response) {
+          location.replace('/auth');
+        },
+        error: function (err) {
+          if (err.responseJSON.code === 10)
+            Output('Old password không chính xác. Mời nhập lại');
+          else if (err.responseJSON.code === 8)
+            Output('Nhập dữ liệu không đúng định dạng. Mời nhập lại')
+          else Output('Lỗi chưa xác định');
+        },
+      });
+    }
   });
 
   // Login event
@@ -348,7 +356,7 @@ $(document).ready(function () {
       success: function (response) {
         if (response.code == 5) {
           alert('Bạn đăng nhập lần đầu. Mời thay đổi password');
-          location.replace('/auth/forgotpass');
+          location.replace('/users/changepass');
         } 
         else if (response.data.user.role === 'admin') location.replace('/admin');
         else location.replace(`/users/${response.data.user._id}`);
